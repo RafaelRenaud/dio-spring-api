@@ -1,6 +1,7 @@
 package com.dio.spring.api.controller.mapper;
 
 import com.dio.spring.api.model.Parking;
+import com.dio.spring.api.model.dto.ParkingCreateDTO;
 import com.dio.spring.api.model.dto.ParkingDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -19,5 +20,13 @@ public class ParkingMapper {
 
     public List<ParkingDTO> convertToParkingDto(List<Parking> parkingList){
         return parkingList.stream().map(this::parkingDto).collect(Collectors.toList());
+    }
+
+    public Parking toParking(ParkingDTO dto) {
+        return MAPPER.map(dto, Parking.class);
+    }
+
+    public Parking toParkingCreate(ParkingCreateDTO dto){
+        return MAPPER.map(dto, Parking.class);
     }
 }

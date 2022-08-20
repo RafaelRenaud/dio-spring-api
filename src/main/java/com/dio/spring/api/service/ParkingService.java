@@ -14,6 +14,10 @@ public interface ParkingService {
 
     ParkingDTO create(ParkingCreateDTO parking);
 
+    ParkingDTO update(String id, ParkingCreateDTO parking);
+
+    void delete(String id);
+
     static String getUUID(){
         return UUID.randomUUID().toString().replace("-", "");
     };

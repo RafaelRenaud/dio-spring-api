@@ -1,6 +1,7 @@
 package com.dio.spring.api.service.impl;
 
 import com.dio.spring.api.controller.mapper.ParkingMapper;
+import com.dio.spring.api.exception.ParkingNotFoundException;
 import com.dio.spring.api.model.dto.ParkingCreateDTO;
 import com.dio.spring.api.model.dto.ParkingDTO;
 import com.dio.spring.api.service.ParkingService;
@@ -39,6 +40,10 @@ public class ParkingServiceImpl implements ParkingService {
 
     public ParkingDTO findById(String id){
         Parking parking = parkingMap.get(id);
+        if(parking == null){
+            throw new ParkingNotFoundException(id);
+        }
+
         return parkingMapper.parkingDto(parking);
     };
 
@@ -51,6 +56,22 @@ public class ParkingServiceImpl implements ParkingService {
 
         parkingMap.put(uuid, parking);
         return parkingMapper.parkingDto(parking);
+    }
+
+    public ParkingDTO update(String id, ParkingCreateDTO parkingDto){
+        //Parking parking = parkingMapper.toParkingCreate(parkingDto);
+        ParkingDTO parkingOld = this.findById(id);
+        ParkingDTO parkingNew = parkingMapper.toParkingDto(parkingDto);
+        parkingNew.setId(parkingOld.getId());
+
+        Parking parking = parkingMapper.toParking(parkingNew);
+        parkingMap.replace(id, parking);
+        return parkingMapper.parkingDto(parking);
+    }
+
+    public void delete(String id){
+        ParkingDTO parking = this.findById(id);
+        parkingMap.remove(id);
     }
 
 }

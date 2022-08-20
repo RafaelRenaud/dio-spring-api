@@ -25,12 +25,26 @@ public class ParkingController {
 
     @GetMapping("/{parking_id}")
     public ResponseEntity<ParkingDTO> findById(@PathVariable String parking_id){
-        return ResponseEntity.ok(parkingService.findById(parking_id));
+        ParkingDTO parking = parkingService.findById(parking_id);
+        return ResponseEntity.ok(parking);
     }
 
     @PostMapping
     public ResponseEntity<ParkingDTO> create(@RequestBody ParkingCreateDTO parking){
         ParkingDTO response = parkingService.create(parking);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ParkingDTO> update(@PathVariable String id, @RequestBody ParkingCreateDTO parking){
+        System.out.println("Chegou aqui");
+        ParkingDTO response = parkingService.update(id, parking);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @DeleteMapping("/{parking_id}")
+    public ResponseEntity delete(@PathVariable String parking_id){
+        parkingService.delete(parking_id);
+        return ResponseEntity.noContent().build();
     }
 }
